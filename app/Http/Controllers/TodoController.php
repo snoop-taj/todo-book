@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TodoCreatedEvent;
 use App\Todo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -69,8 +70,11 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         $todo = new Todo($request->all());
+        $user = Auth::user();
 
-        Auth::user()->todo()->save($todo);
+        $user->todo()->save($todo);
+
+        event(new TodoCreatedEvent($todo, $user));
 
         return response()->json($todo);
     }

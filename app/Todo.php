@@ -27,4 +27,12 @@ class Todo extends Model
     {
         return (new Todo($attributes))->save();
     }
+
+    /**
+     * @return bool
+     */
+    public function isPublic(): bool
+    {
+        return $this->visibility === self::PUBLIC_VISIBILITY;
+    }
 }
